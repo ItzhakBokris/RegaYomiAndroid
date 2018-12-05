@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "240994096892",
+    "firebase_url": "https://rega-yomi.firebaseio.com",
+    "project_id": "rega-yomi",
+    "storage_bucket": "rega-yomi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240994096892:android:a14e3c249ff4e52e",
+        "android_client_info": {
+          "package_name": "com.regayomi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240994096892-n85gf2jd5dbr5o1kbltcj8b3bqdpgqbm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.regayomi",
+            "certificate_hash": "87fc96c8590e2277a82bc7459d94c274924c0367"
+          }
+        },
+        {
+          "client_id": "240994096892-36m73tmbantm69kgdi16s40k9li0inap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_OznjRpbdHEujVBZFdM-llYdIYJ1RVXo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240994096892-36m73tmbantm69kgdi16s40k9li0inap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

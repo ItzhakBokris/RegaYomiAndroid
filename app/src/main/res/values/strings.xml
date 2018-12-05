@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Rega Yomi</string>
+    <string name="search_hint">Search…</string>
+    <string name="load_error_message">
+        Can\'t load data, please check your internet connection and try again or contact us if this persists.
+    </string>
+    <string name="general_error_message">Something went wrong, please try again later or contact us if this persists.</string>
+    <string name="no_articles_found">No articles found</string>
+    <string name="article_bookmarked">Article bookmarked</string>
+    <string name="article_unbookmarked">Article un-bookmarked</string>
+    <string name="settings">Settings</string>
+    <string name="my_bookmarks">My bookmarks</string>
+    <string name="article_notifications_channel_name">Daily Articles</string>
+    <string name="notifications">Notifications</string>
+    <string name="allows_saturday_notifications">Allows saturday-night notifications</string>
+    <string name="saturday_notifications_description">Notified at Saturday night by Hasidic stories</string>
+</resources>

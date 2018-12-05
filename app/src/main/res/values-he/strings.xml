@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">רגע יומי</string>
+    <string name="search_hint">חפש…</string>
+    <string name="load_error_message">לא ניתן לטעון נתונים, בדוק את חיבור האינטרנט שלך ונסה שנית או צור איתנו קשר אם זה נמשך.</string>
+    <string name="general_error_message">משהו השתבש, נסה שוב מאוחר יותר או צור איתנו קשר אם זה נמשך.</string>
+    <string name="no_articles_found">לא נמצאו מאמרים</string>
+    <string name="article_bookmarked">המאמר התווסף לרשימת הסימניות</string>
+    <string name="article_unbookmarked">המאמר הוסר מרשימת הסימניות</string>
+    <string name="settings">הגדרות</string>
+    <string name="my_bookmarks">הסימניות שלי</string>
+    <string name="article_notifications_channel_name">מאמרים יומיים</string>
+    <string name="notifications">התראות</string>
+    <string name="allows_saturday_notifications">אפשר התראות במוצ״ש</string>
+    <string name="saturday_notifications_description">קבלה במוצאי שבת התראות על סיפורי חסידים</string>
+</resources>
+
+

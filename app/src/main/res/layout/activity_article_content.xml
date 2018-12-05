@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.article.ArticleContentActivity">
+
+    <data>
+        <variable name="state" type="com.regayomi.data.model.ArticleState" />
+        <variable name="presenter" type="com.regayomi.ui.article.ArticleContentActivity.ArticlePresenter" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <fragment
+            android:id="@+id/articleContent"
+            android:name="com.regayomi.ui.article.ArticleContentFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{() -> presenter.onBookmarkClick(!state.isBookmarked)}"
+            android:src="@{state.isBookmarked ? @drawable/ic_bookmarked : @drawable/ic_unbookmarked}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

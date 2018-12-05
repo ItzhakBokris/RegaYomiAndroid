@@ -1,0 +1,24 @@
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconSpaceReserved="false">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:key="articleNotificationsCategory"
+        app:title="@string/notifications">
+
+        <com.regayomi.ui.common.TimePreference
+            app:iconSpaceReserved="false"
+            app:key="notificationsTime"
+            app:title="זמן התראה"
+            app:summary="18:00"/>
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="saturdayNotifications"
+            app:summary="@string/saturday_notifications_description"
+            app:title="@string/allows_saturday_notifications" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

@@ -1,0 +1,205 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4f590e52a8e9200efe5e1ab1dd02de8f",
+    "entities": [
+      {
+        "tableName": "Article",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT NOT NULL, `title` TEXT, `topic` TEXT, `date` INTEGER NOT NULL, `lastModifiedDate` INTEGER NOT NULL, `hebrewDate` TEXT, `isActive` INTEGER NOT NULL, PRIMARY KEY(`key`))",
+        "fields": [
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "topic",
+            "columnName": "topic",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastModifiedDate",
+            "columnName": "lastModifiedDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hebrewDate",
+            "columnName": "hebrewDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "key"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Article_title",
+            "unique": false,
+            "columnNames": [
+              "title"
+            ],
+            "createSql": "CREATE  INDEX `index_Article_title` ON `${TABLE_NAME}` (`title`)"
+          },
+          {
+            "name": "index_Article_date",
+            "unique": false,
+            "columnNames": [
+              "date"
+            ],
+            "createSql": "CREATE  INDEX `index_Article_date` ON `${TABLE_NAME}` (`date`)"
+          },
+          {
+            "name": "index_Article_lastModifiedDate",
+            "unique": false,
+            "columnNames": [
+              "lastModifiedDate"
+            ],
+            "createSql": "CREATE  INDEX `index_Article_lastModifiedDate` ON `${TABLE_NAME}` (`lastModifiedDate`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ArticleSection",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`articleKey` TEXT NOT NULL, `header` TEXT, `content` TEXT, `source` TEXT, `order` INTEGER NOT NULL, PRIMARY KEY(`articleKey`, `order`), FOREIGN KEY(`articleKey`) REFERENCES `Article`(`key`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "articleKey",
+            "columnName": "articleKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "header",
+            "columnName": "header",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "order",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "articleKey",
+            "order"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "Article",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "articleKey"
+            ],
+            "referencedColumns": [
+              "key"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ArticleState",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`articleKey` TEXT NOT NULL, `isBookmarked` INTEGER NOT NULL, `isViewed` INTEGER NOT NULL, PRIMARY KEY(`articleKey`), FOREIGN KEY(`articleKey`) REFERENCES `Article`(`key`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "articleKey",
+            "columnName": "articleKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBookmarked",
+            "columnName": "isBookmarked",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isViewed",
+            "columnName": "isViewed",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "articleKey"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_ArticleState_isBookmarked",
+            "unique": false,
+            "columnNames": [
+              "isBookmarked"
+            ],
+            "createSql": "CREATE  INDEX `index_ArticleState_isBookmarked` ON `${TABLE_NAME}` (`isBookmarked`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Article",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "articleKey"
+            ],
+            "referencedColumns": [
+              "key"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4f590e52a8e9200efe5e1ab1dd02de8f\")"
+    ]
+  }
+}
