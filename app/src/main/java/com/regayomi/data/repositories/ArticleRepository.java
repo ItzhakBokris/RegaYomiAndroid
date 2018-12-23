@@ -53,6 +53,14 @@ public class ArticleRepository {
     }
 
     /**
+     * Gets all the bookmarked articles, sorted by their date.
+     */
+    @NonNull
+    public LiveData<List<Article>> getBookmarkedArticles() {
+        return articleDao.loadBookmarkedArticles();
+    }
+
+    /**
      * Gets the specified article.
      */
     @NonNull

@@ -1,4 +1,4 @@
-package com.regayomi.ui.article;
+package com.regayomi.ui.article.content;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ArticleSectionListAdapter extends RecyclerView.Adapter<ArticleSectionListAdapter.ArticleSectionViewHolder>  {
 
     // List of article-sections handled by the adapter.
-    public List<ArticleSection> sections;
+    private List<ArticleSection> sections;
 
     /**
      * Create article-section-list adapter with the specified article-sections.

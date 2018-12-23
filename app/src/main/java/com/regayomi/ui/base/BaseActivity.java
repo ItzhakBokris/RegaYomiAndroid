@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.regayomi.databinding.ActivityArticleMainBinding;
+import com.regayomi.ui.article.ArticleViewModel;
 import com.regayomi.utils.ConfigUtils;
 
 import androidx.annotation.LayoutRes;
@@ -28,33 +31,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         return true;
     }
 
-    /**
-     * Gets the activity layout resource id.
-     */
-    @LayoutRes
-    protected abstract int getLayoutId();
-
-    /**
-     * Gets the persistence view-model class of the activity.
-     */
-    @NonNull
-    protected abstract Class<V> getViewModelClass();
-
-    /**
-     * Called when the view of the activity is ready and can be initialized.
-     */
-    protected abstract void onSetUp(@NonNull T binding, @NonNull V model);
-
-    /**
-     * Gets the data-binding object that generated from the view of the activity.
-     */
-    protected T getViewBinding() { return viewBinding; }
-
-    /**
-     * Gets the persistence view-model of the activity.
-     */
-    protected V getViewModel() { return viewModel; }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +43,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         } else if (getIntent() != null && getIntent().getExtras() != null) {
             viewModel.readFrom(getIntent().getExtras());
         }
+        initSnackbar();
         onSetUp(viewBinding, viewModel);
     }
 
@@ -94,5 +71,40 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
             }
         }
         catch (PackageManager.NameNotFoundException ignored) {}
+    }
+
+    /**
+     * Called when the view of the activity is ready and can be initialized.
+     */
+    protected abstract void onSetUp(@NonNull T binding, @NonNull V model);
+
+    /**
+     * Gets the activity layout resource id.
+     */
+    @LayoutRes
+    protected abstract int getLayoutId();
+
+    /**
+     * Gets the data-binding object that generated from the view of the activity.
+     */
+    protected T getViewBinding() { return viewBinding; }
+
+    /**
+     * Gets the persistence view-model class of the activity.
+     */
+    @NonNull
+    protected abstract Class<V> getViewModelClass();
+
+    /**
+     * Gets the persistence view-model of the activity.
+     */
+    protected V getViewModel() { return viewModel; }
+
+    /**
+     * Listens to Snackbar messages that could displayed at some scenarios.
+     */
+    private void initSnackbar() {
+        viewModel.getSnackbarMessage().observe(this,
+                messageId -> Snackbar.make(viewBinding.getRoot(), messageId, Snackbar.LENGTH_LONG).show());
     }
 }

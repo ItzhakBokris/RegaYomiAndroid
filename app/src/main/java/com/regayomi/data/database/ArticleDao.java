@@ -4,7 +4,6 @@ import com.regayomi.data.model.Article;
 import com.regayomi.data.model.ArticleSection;
 import com.regayomi.data.model.ArticleState;
 
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,7 @@ import androidx.room.Transaction;
 public abstract class ArticleDao {
 
     /**
-     * Loads all the articles sorted by their date.
+     * Loads all the articles, sorted by their date.
      */
     @Query("SELECT * FROM article WHERE isActive == 1 ORDER BY date DESC")
     public abstract LiveData<List<Article>> loadArticles();
@@ -30,6 +29,13 @@ public abstract class ArticleDao {
     @Query("SELECT * FROM article WHERE isActive == 1 AND " +
         "(topic LIKE '%' || :searchQuery || '%'  OR title LIKE '%' || :searchQuery || '%') ORDER BY date DESC")
     public abstract LiveData<List<Article>> loadArticles(@NonNull String searchQuery);
+
+    /**
+     * Loads all the bookmarked articles, sorted by their date.
+     */
+    @Query("SELECT * FROM article LEFT JOIN articlestate WHERE " +
+            "isActive == 1 AND `key` == articleKey AND isBookmarked == 1 ORDER BY date DESC")
+    public abstract LiveData<List<Article>> loadBookmarkedArticles();
 
     /**
      * Loads the specified article.

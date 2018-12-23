@@ -20,7 +20,5 @@ public class SettingsActivity extends BaseActivity<ActivitySettingsBinding, Sett
     }
 
     @Override
-    protected void onSetUp(@NonNull ActivitySettingsBinding binding, @NonNull SettingsViewModel model) {
-
-    }
+    protected void onSetUp(@NonNull ActivitySettingsBinding binding, @NonNull SettingsViewModel model) {}
 }

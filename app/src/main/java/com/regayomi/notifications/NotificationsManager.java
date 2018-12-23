@@ -3,7 +3,10 @@ package com.regayomi.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 import com.regayomi.R;
 import com.regayomi.ui.base.App;
@@ -19,12 +22,18 @@ import androidx.work.WorkManager;
 
 public class NotificationsManager {
 
-    public static final String ARTICLE_NOTIFICATIONS_CHANNEL_ID = App.TAG + "_articles_channel";
+    static final String ARTICLE_NOTIFICATIONS_CHANNEL_ID = App.TAG + "_articles_channel";
 
     private static final String ARTICLE_NOTIFICATION_WORKER_TAG = "article_notification_worker_tag";
 
     // A singleton instance of the jobs-manager class.
     private static NotificationsManager notificationsManager;
+
+    // Instance of the default shared-preference.
+    private SharedPreferences sharedPreferences;
+
+    // Instance of resources of the application context.
+    private Resources resources;
 
     /**
      * Gets the singleton instance of the jobs-manager class.
@@ -42,9 +51,9 @@ public class NotificationsManager {
     @WorkerThread
     public void scheduleArticleNotification() {
         OneTimeWorkRequest worker = new OneTimeWorkRequest.Builder(ArticleNotificationWorker.class)
-            .addTag(ARTICLE_NOTIFICATION_WORKER_TAG)
-            .setInitialDelay(calculateArticleNotificationDelay(), TimeUnit.MILLISECONDS)
-            .build();
+                .addTag(ARTICLE_NOTIFICATION_WORKER_TAG)
+                .setInitialDelay(calculateArticleNotificationDelay(), TimeUnit.MILLISECONDS)
+                .build();
 
         WorkManager.getInstance().enqueueUniqueWork(ARTICLE_NOTIFICATION_WORKER_TAG, ExistingWorkPolicy.REPLACE, worker);
     }
@@ -54,6 +63,8 @@ public class NotificationsManager {
      */
     private NotificationsManager(Context context) {
         createArticleNotificationsChannel(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        resources = context.getResources();
     }
 
     /**
@@ -75,14 +86,14 @@ public class NotificationsManager {
      * Calculates the initial delay before the article-notification should triggered.
      */
     private long calculateArticleNotificationDelay() {
-        int hours = 20;
-        int minutes = 0;
-        boolean inSaturday = true;
+        String notificationTimeKey = resources.getString(R.string.notification_time_key);
+        String saturdayNotificationsKey = resources.getString(R.string.saturday_notifications_key);
+        int notificationDefaultTime = resources.getInteger(R.integer.notification_default_time);
+        int totalMinutes = sharedPreferences.getInt(notificationTimeKey, notificationDefaultTime);
+        boolean inSaturday = sharedPreferences.getBoolean(saturdayNotificationsKey, false);
 
         Calendar current = Calendar.getInstance();
-        Calendar nextTime = DateUtils.createCalendarWithoutTime();
-        nextTime.set(Calendar.HOUR_OF_DAY, hours);
-        nextTime.set(Calendar.MINUTE, minutes);
+        Calendar nextTime = DateUtils.createTimeCalendar(totalMinutes / 60, totalMinutes % 60, 0);
         if (nextTime.before(current)) {
             int daysOffset = nextTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && !inSaturday ? 2 : 1;
             nextTime.add(Calendar.DAY_OF_WEEK, daysOffset);

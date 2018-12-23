@@ -1,4 +1,4 @@
-package com.regayomi.ui.article;
+package com.regayomi.ui.article.list;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

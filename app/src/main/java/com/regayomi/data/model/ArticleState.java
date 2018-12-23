@@ -26,7 +26,7 @@ public class ArticleState {
     /**
      * Create new article-state to the specified article.
      */
-    public ArticleState(String articleKey) {
+    public ArticleState(@NonNull String articleKey) {
         this.articleKey = articleKey;
     }
 }

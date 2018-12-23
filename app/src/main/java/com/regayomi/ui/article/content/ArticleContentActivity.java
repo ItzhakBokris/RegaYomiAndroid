@@ -1,12 +1,9 @@
-package com.regayomi.ui.article;
+package com.regayomi.ui.article.content;
 
-import android.util.Log;
-
-import com.google.android.material.snackbar.Snackbar;
 import com.regayomi.R;
 import com.regayomi.data.model.ArticleState;
 import com.regayomi.databinding.ActivityArticleContentBinding;
-import com.regayomi.ui.base.App;
+import com.regayomi.ui.article.ArticleViewModel;
 import com.regayomi.ui.base.BaseActivity;
 
 import androidx.annotation.NonNull;
@@ -28,6 +25,7 @@ public class ArticleContentActivity extends BaseActivity<ActivityArticleContentB
 
     @Override
     protected void onSetUp(@NonNull ActivityArticleContentBinding binding, @NonNull ArticleViewModel model) {
+        model.getSelectedArticle().observe(this, article -> setTitle(article.topic));
         model.getSelectedArticleState().observe(this, state -> {
             if (!state.isViewed) {
                 state.isViewed = true;
@@ -36,15 +34,6 @@ public class ArticleContentActivity extends BaseActivity<ActivityArticleContentB
             binding.setState(state);
             binding.setPresenter(new ArticlePresenter(state));
         });
-        initSnackbar(binding, model);
-    }
-
-    /**
-     * Listens to Snackbar messages that could displayed at some scenarios.
-     */
-    private void initSnackbar(@NonNull ActivityArticleContentBinding binding, @NonNull ArticleViewModel model) {
-        model.getSnackbarMessage().observe(this,
-            messageId -> Snackbar.make(binding.container, messageId, Snackbar.LENGTH_LONG).show());
     }
 
     public class ArticlePresenter {

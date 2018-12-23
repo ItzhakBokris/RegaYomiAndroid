@@ -4,13 +4,12 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 
 import com.regayomi.R;
 import com.regayomi.data.model.Article;
 import com.regayomi.data.model.ArticleState;
 import com.regayomi.data.repositories.ArticleRepository;
-import com.regayomi.ui.article.ArticleContentActivity;
+import com.regayomi.ui.article.content.ArticleContentActivity;
 import com.regayomi.ui.article.ArticleViewModel;
 
 import androidx.annotation.NonNull;
@@ -18,8 +17,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import static com.regayomi.notifications.NotificationsManager.ARTICLE_NOTIFICATIONS_CHANNEL_ID;
 
 public class ArticleNotificationWorker extends Worker {
 
@@ -51,26 +48,27 @@ public class ArticleNotificationWorker extends Worker {
     /**
      * Post an article notification of the specified article.
      */
-    public void postNotification(Article article) {
+    private void postNotification(Article article) {
 
         // Creates the intent that will fire when the user taps the notification.
-        Intent intent = new Intent(getApplicationContext(), ArticleContentActivity.class);
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context, ArticleContentActivity.class);
         intent.putExtra(ArticleViewModel.SELECTED_ARTICLE_KEY, article.key);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(INTENT_REQUEST_CODE, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Create the notification appearance and behavior.
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), ARTICLE_NOTIFICATIONS_CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationsManager.ARTICLE_NOTIFICATIONS_CHANNEL_ID)
             .setSmallIcon(android.R.drawable.star_big_on)
             .setContentTitle(article.topic)
             .setContentText(article.title)
-            .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+            .setColor(context.getResources().getColor(R.color.colorPrimary))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true);
 
         // Post the notification.
-        NotificationManagerCompat.from(getApplicationContext()).notify(NOTIFICATION_ID, builder.build());
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build());
     }
 }

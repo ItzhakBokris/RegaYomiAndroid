@@ -2,13 +2,13 @@ package com.regayomi.ui.article;
 
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.regayomi.data.model.Article;
 import com.regayomi.data.model.ArticleSection;
 import com.regayomi.data.model.ArticleState;
 import com.regayomi.data.repositories.ArticleRepository;
 import com.regayomi.ui.base.BaseViewModel;
-import com.regayomi.utils.SingleLiveEvent;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import androidx.lifecycle.Transformations;
 
 public class ArticleViewModel extends BaseViewModel {
 
-    // An intent key used for read/write the selected article id from/to a bundle.
+    // A key used for read/write the selected article id from/to a bundle.
     public static final String SELECTED_ARTICLE_KEY = "selected_article_key";
 
     // The singleton instance of the article-repository.
@@ -41,8 +41,8 @@ public class ArticleViewModel extends BaseViewModel {
     // Live-data of the article-state associated to the current selected article.
     private final LiveData<ArticleState> selectedArticleState;
 
-    // Single-live-event of message-id that should be displayed in a snackbar.
-    private final SingleLiveEvent<Integer> snackbarMessage;
+    // Live-data of the articles' filter-type.
+    private final MutableLiveData<FilterType> filterType;
 
     /**
      * Create new view-model of articles.
@@ -53,14 +53,20 @@ public class ArticleViewModel extends BaseViewModel {
         articleRepository = ArticleRepository.getInstance(application);
         searchQuery = new MutableLiveData<>();
         searchQuery.setValue(null);
-        articles = Transformations.switchMap(searchQuery, articleRepository::getArticles);
+        filterType = new MutableLiveData<>();
+        filterType.setValue(FilterType.Regular);
+        articles = Transformations.switchMap(filterType, filterType -> {
+            if (filterType == FilterType.Bookmarks) {
+                return articleRepository.getBookmarkedArticles();
+            }
+            return Transformations.switchMap(searchQuery, articleRepository::getArticles);
+        });
         selectedArticle = new MediatorLiveData<>();
         selectedArticleSections = Transformations.switchMap(selectedArticle, article -> articleRepository.getArticleSections(article.key));
         selectedArticleState = Transformations.switchMap(selectedArticle, article -> {
             LiveData<ArticleState> stateLiveData = articleRepository.getArticleState(article.key);
             return Transformations.map(stateLiveData, state -> state != null ? state : new ArticleState(article.key));
         });
-        snackbarMessage = new SingleLiveEvent<>();
     }
 
     /**
@@ -99,13 +105,6 @@ public class ArticleViewModel extends BaseViewModel {
     }
 
     /**
-     * Gets single-live-event of message-id that should be displayed in a snackbar.
-     */
-    public SingleLiveEvent<Integer> getSnackbarMessage() {
-        return snackbarMessage;
-    }
-
-    /**
      * Sets new search-query of articles.
      */
     public void setSearchQuery(String searchQuery) {
@@ -124,6 +123,13 @@ public class ArticleViewModel extends BaseViewModel {
      */
     public void setSelectedArticleState(ArticleState state) {
         articleRepository.setArticleState(state);
+    }
+
+    /**
+     * Sets the filter-type of the articles.
+     */
+    public void setFilterType(FilterType type) {
+        filterType.setValue(type);
     }
 
     /**
@@ -153,5 +159,12 @@ public class ArticleViewModel extends BaseViewModel {
      */
     private void selectArticle(String articleKey) {
         selectedArticle.addSource(articleRepository.getArticle(articleKey), selectedArticle::setValue);
+    }
+
+    /**
+     * An enum of all the articles' filter types.
+     */
+    public enum FilterType {
+        Regular, Bookmarks, Category
     }
 }

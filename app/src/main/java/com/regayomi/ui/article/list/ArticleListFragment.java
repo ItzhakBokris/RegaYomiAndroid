@@ -1,7 +1,8 @@
-package com.regayomi.ui.article;
+package com.regayomi.ui.article.list;
 
 import com.regayomi.R;
 import com.regayomi.databinding.FragmentArticleListBinding;
+import com.regayomi.ui.article.ArticleViewModel;
 import com.regayomi.ui.base.BaseFragment;
 
 import java.util.Collections;
@@ -31,10 +32,7 @@ public class ArticleListFragment extends BaseFragment<FragmentArticleListBinding
         binding.list.setHasFixedSize(true);
         ArticleListAdapter adapter = new ArticleListAdapter(Collections.emptyList(), model::selectArticle);
         binding.list.setAdapter(adapter);
-        model.getArticles().observe(this, articles -> {
-            adapter.setArticles(articles);
-            binding.setNoArticles(articles.isEmpty());
-        });
+        model.getArticles().observe(this, adapter::setArticles);
         model.getSearchQuery().observe(this, adapter::highlightText);
     }
 }

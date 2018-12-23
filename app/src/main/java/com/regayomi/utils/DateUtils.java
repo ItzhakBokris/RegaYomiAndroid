@@ -16,4 +16,14 @@ public class DateUtils {
         return calendar;
     }
 
+    /**
+     * Creates calendar with the specified time.
+     */
+    public static Calendar createTimeCalendar(int hours, int minutes, int seconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, seconds);
+        return calendar;
+    }
 }

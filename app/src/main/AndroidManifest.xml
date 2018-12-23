@@ -25,11 +25,17 @@
         <activity android:name=".ui.article.ArticleMainActivity" />
 
         <activity
-            android:name=".ui.article.ArticleContentActivity"
+            android:name=".ui.article.bookmarks.BookmarkedArticleMainActivity"
+            android:label="@string/my_bookmarks"
+            android:parentActivityName=".ui.article.ArticleMainActivity" />
+
+        <activity
+            android:name=".ui.article.content.ArticleContentActivity"
             android:parentActivityName=".ui.article.ArticleMainActivity" />
 
         <activity
             android:name=".ui.settings.SettingsActivity"
+            android:label="@string/settings"
             android:parentActivityName=".ui.article.ArticleMainActivity" />
 
     </application>

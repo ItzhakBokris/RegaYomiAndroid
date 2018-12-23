@@ -12,70 +12,50 @@ import androidx.preference.PreferenceDialogFragmentCompat;
 
 public class TimePreferenceDialog extends PreferenceDialogFragmentCompat {
 
-    public static TimePreferenceDialog newInstance(
-        String key) {
-        final TimePreferenceDialog
-            fragment = new TimePreferenceDialog();
-        final Bundle b = new Bundle(1);
-        b.putString(ARG_KEY, key);
-        fragment.setArguments(b);
+    // The time-preference that requested this dialog.
+    private TimePreference timePreference;
 
+    // The time-picker widget contained in the dialog.
+    private TimePicker timePicker;
+
+    /**
+     * Creates new instance of this fragment associated to the specified preference.
+     */
+    public static TimePreferenceDialog newInstance(String preferenceKey) {
+        final TimePreferenceDialog fragment = new TimePreferenceDialog();
+        final Bundle bundle = new Bundle(1);
+        bundle.putString(ARG_KEY, preferenceKey);
+        fragment.setArguments(bundle);
         return fragment;
     }
-
-    TimePicker mTimePicker;
 
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
-        mTimePicker = view.findViewById(R.id.edit);
-
-        // Exception when there is no TimePicker
-        if (mTimePicker == null) {
-            throw new IllegalStateException("Dialog view must contain" +
-                " a TimePicker with id 'edit'");
-        }
-
-        // Get the time from the related Preference
-        Integer minutesAfterMidnight = null;
         DialogPreference preference = getPreference();
         if (preference instanceof TimePreference) {
-            minutesAfterMidnight =
-                ((TimePreference) preference).getTime();
-        }
+            timePreference = (TimePreference) preference;
+            timePicker = view.findViewById(R.id.timePicker);
 
-        // Set the time to the TimePicker
-        if (minutesAfterMidnight != null) {
-            int hours = minutesAfterMidnight / 60;
-            int minutes = minutesAfterMidnight % 60;
+            int totalMinutes = timePreference.getTime();
+            int hours = totalMinutes / 60;
+            int minutes = totalMinutes % 60;
             boolean is24hour = DateFormat.is24HourFormat(getContext());
-
-            mTimePicker.setIs24HourView(is24hour);
-            mTimePicker.setCurrentHour(hours);
-            mTimePicker.setCurrentMinute(minutes);
+            timePicker.setCurrentHour(hours);
+            timePicker.setCurrentMinute(minutes);
+            timePicker.setIs24HourView(is24hour);
         }
     }
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
-        if (positiveResult) {
-            // generate value to save
-            int hours = mTimePicker.getCurrentHour();
-            int minutes = mTimePicker.getCurrentMinute();
-            int minutesAfterMidnight = (hours * 60) + minutes;
-
-            // Get the related Preference and save the value
-            DialogPreference preference = getPreference();
-            if (preference instanceof TimePreference) {
-                TimePreference timePreference =
-                    ((TimePreference) preference);
-                // This allows the client to ignore the user value.
-                if (timePreference.callChangeListener(
-                    minutesAfterMidnight)) {
-                    // Save the value
-                    timePreference.setTime(minutesAfterMidnight);
-                }
+        if (positiveResult && timePicker != null && timePreference != null) {
+            int hours = timePicker.getCurrentHour();
+            int minutes = timePicker.getCurrentMinute();
+            int totalMinutes = (hours * 60) + minutes;
+            if (timePreference.callChangeListener(totalMinutes)) {
+                timePreference.setTime(totalMinutes);
             }
         }
     }

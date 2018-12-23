@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".ui.article.ArticleMainActivity">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.article.ArticleMainActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="noArticlesMessages" type="String" />
+        <variable name="noArticles" type="boolean" />
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{noArticlesMessages != null ? noArticlesMessages : @string/no_articles_found}"
+            android:visibility="@{noArticles ? View.VISIBLE : View.GONE}"
+            tools:text="@string/no_articles_found" />
+
         <fragment
             android:id="@+id/articleList"
-            android:name="com.regayomi.ui.article.ArticleListFragment"
+            android:name="com.regayomi.ui.article.list.ArticleListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -1,7 +1,8 @@
-package com.regayomi.ui.article;
+package com.regayomi.ui.article.content;
 
 import com.regayomi.R;
 import com.regayomi.databinding.FragmentArticleContentBinding;
+import com.regayomi.ui.article.ArticleViewModel;
 import com.regayomi.ui.base.BaseFragment;
 
 import java.util.Collections;

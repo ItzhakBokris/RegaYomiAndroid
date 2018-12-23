@@ -21,33 +21,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     // The persistence view-model of the fragment.
     private V viewModel;
 
-    /**
-     * Gets the fragment layout resource id.
-     */
-    @LayoutRes
-    protected abstract int getLayoutId();
-
-    /**
-     * Gets the persistence view-model class of the fragment.
-     */
-    @NonNull
-    protected abstract Class<V> getViewModelClass();
-
-    /**
-     * Called when the view of the fragment is ready and can be initialized.
-     */
-    protected abstract void onSetUp(@NonNull T binding, @NonNull V model);
-
-    /**
-     * Gets the data-binding object that generated from the view of the fragment.
-     */
-    protected T getViewBinding() { return viewBinding; }
-
-    /**
-     * Gets the persistence view-model of the fragment.
-     */
-    protected V getViewModel() { return viewModel; }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,4 +47,31 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         super.onSaveInstanceState(outState);
         viewModel.writeTo(outState);
     }
+
+    /**
+     * Gets the fragment layout resource id.
+     */
+    @LayoutRes
+    protected abstract int getLayoutId();
+
+    /**
+     * Gets the persistence view-model class of the fragment.
+     */
+    @NonNull
+    protected abstract Class<V> getViewModelClass();
+
+    /**
+     * Called when the view of the fragment is ready and can be initialized.
+     */
+    protected abstract void onSetUp(@NonNull T binding, @NonNull V model);
+
+    /**
+     * Gets the data-binding object that generated from the view of the fragment.
+     */
+    protected T getViewBinding() { return viewBinding; }
+
+    /**
+     * Gets the persistence view-model of the fragment.
+     */
+    protected V getViewModel() { return viewModel; }
 }
